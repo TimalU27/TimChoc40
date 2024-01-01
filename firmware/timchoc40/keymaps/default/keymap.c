@@ -40,11 +40,34 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* OLED */
 
 #ifdef OLED_ENABLE
+
+//setup
 char wpm_str[10];
 
 bool oled_task_user() {
+
+    //layer display
+    oled_write_P(PSTR("Layer: "), false);
+
+        switch (get_highest_layer(layer_state)) {
+            case 0:
+                oled_write_P(PSTR("Main\n"), false);
+                break;
+
+            case 1:
+                oled_write_P(PSTR("FN 1\n"), false);
+                break;
+
+            case 2:
+                oled_write_P(PSTR("FN 2\n"),false);
+        
+            default:
+                // Or use the write_ln shortcut over adding '\n' to the end of your string
+                oled_write_ln_P(PSTR("other"), false);
+        }
     
-    oled_set_cursor(7, 2);
+    //wpm display 
+    oled_set_cursor(0, 2.25);
 
     sprintf(wpm_str, "wpm: %03d", get_current_wpm());
     oled_write(wpm_str, false);
